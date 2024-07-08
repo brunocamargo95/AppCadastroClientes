@@ -1,0 +1,43 @@
+﻿@model IEnumerable<AppCadastroClientes.Models.Cliente>
+
+@{
+    ViewBag.Title = "Clientes";
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/scripts")
+    @Styles.Render("~/Content/css")
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Documento</th>
+            <th>Data de Cadastro</th>
+            <th>Contato</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="@((item.IsDeleted) ? "inactive-row" : "")">
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Tipo)</td>
+                <td>@Html.DisplayFor(modelItem => item.Documento)</td>
+                <td>@Html.DisplayFor(modelItem => item.DataCadastro)</td>
+                <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
+                <td>@(item.IsDeleted ? "Inativo" : "Ativo")</td>
+                <td>
+                    <a class="btn btn-info @((item.IsDeleted) ? "disabled" : "")" href="@Url.Action("Edit", "Clientes", new { id = item.Id })" role="button" @(item.IsDeleted ? "tabindex=-1 aria-disabled=true" : "")>Editar</a>
+                    <a class="btn btn-danger @((item.IsDeleted) ? "disabled" : "")" href="@Url.Action("Delete", "Clientes", new { id = item.Id })" role="button" @(item.IsDeleted ? "tabindex=-1 aria-disabled=true" : "")>Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

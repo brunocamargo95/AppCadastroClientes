@@ -1,0 +1,59 @@
+﻿@model AppCadastroClientes.Models.Cliente
+
+@{
+    ViewBag.Title = "Excluir";
+}
+
+<h2 class="bi bi-person-dash"> Excluir</h2>
+
+<h3>Confirma que deseja excluir o cliente abaixo?</h3>
+<div>
+    <h4>Cliente</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Documento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Documento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefone)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Excluir" class="btn btn-success" />
+                <a class="btn btn-danger" href="@Url.Action("Index", "Clientes")">Voltar</a>
+            </div>
+        </div>
+    }
+</div>

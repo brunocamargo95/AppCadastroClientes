@@ -1,0 +1,70 @@
+﻿@model AppCadastroClientes.Models.Cliente
+
+@{
+    ViewBag.Title = "Edtiar";
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
+
+<h2 class="bi bi-pencil-fill"> Editar</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Cliente</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.DataCadastro)
+
+        <div class="form-group">
+            Nome
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="rdbPF" name="Tipo" value="PF" @(Model.Tipo == "PF" ? "checked" : "") />
+            <label class="form-check-label" for="rdbPF">Pessoa Física</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="rdbPJ" name="Tipo" value="PJ" @(Model.Tipo == "PJ" ? "checked" : "") />
+            <label class="form-check-label" for="rdbPJ">Pessoa Jurídica</label>
+        </div>
+
+        <div class="form-group">
+            <label id="documento-error" class="text-danger error-message" style="display: none;">CPF ou CNPJ inválido.</label>
+            Documento
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Documento, new { htmlAttributes = new { @class = "form-control", id = "Documento" } })
+                @Html.ValidationMessageFor(model => model.Documento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Telefone
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Telefone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Telefone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Salvar" class="btn btn-success" />
+            <a class="btn btn-danger" href="@Url.Action("Index", "Clientes")">Voltar</a>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,49 @@
+﻿@import url('site.css');
+
+h2 {
+    text-align: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh;
+}
+
+.form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+#btnNovo {
+    padding: 10px 20px;
+    margin-right: auto;
+}
+
+.Filtros {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
+    .Filtros input,
+    .Filtros button {
+        padding: 10px;
+        height: 40px; 
+        box-sizing: border-box;
+    }
+.inactive-row {
+    background-color: #f2dede;
+}
+
+.error-message {
+    color: red;
+}
