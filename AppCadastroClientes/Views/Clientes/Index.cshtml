@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppCadastroClientes.Models.Cliente>
+﻿@model PagedList.IPagedList<AppCadastroClientes.Models.Cliente>
 
 @{
     ViewBag.Title = "Clientes";
@@ -10,15 +10,41 @@
     <div class="form">
         <a class="btn btn-primary" id="btnNovo" href="@Url.Action("Create", "Clientes")" role="button">Novo Cliente</a>
         <div class="Filtros">
-            <input class="form-check-input" type="checkbox" id="somenteAtivos" checked>
-            <label class="form-check-label" for="somenteAtivos">Somente Ativos</label>
-            <input  id="txtnome" type="text" placeholder="Nome">
-            <input  id="txtdocumento" type="text" placeholder="Documento">
-            <a class="btn btn-outline-primary" id="btnfiltrar" role="button" >Filtrar</a>
+            <form method="get" action="@Url.Action("Index")">
+                <input class="form-check-input" type="checkbox" id="TodosAtivos" name="TodosAtivos" @(ViewBag.TodosAtivos == true ? "checked" : "")>
+                <label class="form-check-label" for="TodosAtivos">Ativos</label>
+
+                <input class="form-check-input" type="checkbox" id="TodosInativos" name="TodosInativos" @(ViewBag.TodosInativos == true ? "checked" : "")>
+                <label class="form-check-label" for="TodosInativos">Inativos</label>
+
+                <input id="txtnome" name="nome" type="text" placeholder="Nome" value="@ViewBag.Nome">
+                <input id="txtdocumento" name="documento" type="text" placeholder="Documento" value="@ViewBag.Documento">
+                <button type="submit" class="btn btn-outline-primary" id="btnfiltrar">Filtrar</button>
+            </form>
         </div>
     </div>
 </div>
 
 <div id="clientesTable">
     @Html.Partial("_ClientesTable", Model)
+</div>
+
+
+<div>
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    de @Model.PageCount
+
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "FiltrarClientes", new { pagina = 1, TodosAtivos = ViewBag.TodosAtivos, TodosInativos = ViewBag.TodosInativos, nome = ViewBag.Nome, documento = ViewBag.Documento })
+        @Html.Raw(" ");
+        @Html.ActionLink("< Anterior", "FiltrarClientes", new { pagina = Model.PageNumber - 1, TodosAtivos = ViewBag.TodosAtivos, TodosInativos = ViewBag.TodosInativos, nome = ViewBag.Nome, documento = ViewBag.Documento })
+    }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Próxima >", "FiltrarClientes", new { pagina = Model.PageNumber + 1, TodosAtivos = ViewBag.TodosAtivos, TodosInativos = ViewBag.TodosInativos, nome = ViewBag.Nome, documento = ViewBag.Documento })
+        @Html.Raw(" ");
+        @Html.ActionLink(">>", "FiltrarClientes", new { pagina = Model.PageCount, TodosAtivos = ViewBag.TodosAtivos, TodosInativos = ViewBag.TodosInativos, nome = ViewBag.Nome, documento = ViewBag.Documento })
+    }
 </div>

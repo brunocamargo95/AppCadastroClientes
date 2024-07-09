@@ -46,14 +46,13 @@
     </dl>
 
     @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Excluir" class="btn btn-success" />
-                <a class="btn btn-danger" href="@Url.Action("Index", "Clientes")">Voltar</a>
-            </div>
+        {
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Excluir" class="btn btn-success" />
+            <a class="btn btn-danger" href="@Url.Action("Index", "Clientes")">Voltar</a>
         </div>
-    }
+    </div>
+        }
 </div>

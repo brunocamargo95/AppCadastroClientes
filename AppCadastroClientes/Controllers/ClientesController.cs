@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AppCadastroClientes.Helpers;
+using AppCadastroClientes.Models;
+using PagedList;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using AppCadastroClientes.Helpers;
-using AppCadastroClientes.Models;
 
 namespace AppCadastroClientes.Controllers
 {
@@ -15,56 +14,38 @@ namespace AppCadastroClientes.Controllers
     {
         private AppDbContext db = new AppDbContext();
 
-        // GET: Clientes
-        public ActionResult Index()
+        public ActionResult Index(int? pagina)
         {
-            return View(db.Clientes.AsQueryable().Where(c => !c.IsDeleted));
+            var ListaClientes = db.Clientes.AsQueryable().Where(c => !c.IsDeleted).OrderBy(x => x.Id);
+            int paginaTamanho = 50;
+            int paginaNumero = (pagina ?? 1);
+
+            return View(ListaClientes.ToPagedList(paginaNumero, paginaTamanho));
         }
 
-        public ActionResult FiltrarClientes(bool somenteAtivos, string nome, string documento)
+        public ActionResult FiltrarClientes(bool TodosAtivos, bool TodosInativos, string nome, string documento, int? pagina)
         {
-            var clientes = db.Clientes.AsQueryable();
+            int paginaTamanho = 50;
+            int paginaNumero = (pagina ?? 1);
+            var ListaClientes = db.Clientes.AsQueryable();
 
-            if (somenteAtivos)
-            {
-                clientes = clientes.Where(c => !c.IsDeleted);
-            }
+            if (!(TodosAtivos && TodosInativos))
+                ListaClientes = ListaClientes.Where(c => (TodosAtivos ? !c.IsDeleted : c.IsDeleted));
 
             if (!string.IsNullOrEmpty(nome))
-            {
-                clientes = clientes.Where(c => c.Nome.Contains(nome));
-            }
+                ListaClientes = ListaClientes.Where(c => c.Nome.Contains(nome));
 
             if (!string.IsNullOrEmpty(documento))
-            {
-                clientes = clientes.Where(c => c.Documento.Contains(documento));
-            }
+                ListaClientes = ListaClientes.Where(c => c.Documento.Contains(documento));
 
-            return PartialView("_ClientesTable", clientes.ToList());
+            return PartialView("_ClientesTable", ListaClientes.OrderBy(x => x.Id).ToPagedList(paginaNumero, paginaTamanho));
         }
 
-        // GET: Clientes/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Cliente cliente = db.Clientes.Find(id);
-            if (cliente == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cliente);
-        }
-
-        // GET: Clientes/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Clientes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Nome,Tipo,Documento,DataCadastro,Telefone,IsDeleted")] Cliente cliente)
@@ -86,7 +67,6 @@ namespace AppCadastroClientes.Controllers
             return View(cliente);
         }
 
-        // GET: Clientes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -101,7 +81,6 @@ namespace AppCadastroClientes.Controllers
             return View(cliente);
         }
 
-        // POST: Clientes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Nome,Tipo,Documento,DataCadastro,Telefone,IsDeleted")] Cliente cliente)
@@ -120,7 +99,6 @@ namespace AppCadastroClientes.Controllers
             return View(cliente);
         }
 
-        // GET: Clientes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -135,7 +113,6 @@ namespace AppCadastroClientes.Controllers
             return View(cliente);
         }
 
-        // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

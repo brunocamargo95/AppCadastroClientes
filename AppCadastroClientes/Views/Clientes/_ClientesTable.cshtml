@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppCadastroClientes.Models.Cliente>
+﻿﻿@model IEnumerable<AppCadastroClientes.Models.Cliente>
 
 @{
     ViewBag.Title = "Clientes";
@@ -39,5 +39,10 @@
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
+<div>
+    Total de registros: @Model.Count()
+</div>
+
